@@ -326,14 +326,14 @@ class ApiClient[
   def users(options: GetUserOptions): Stream[F, User] = {
     def single(page: Int): F[List[User]] =
       http.request[Unit, List[User]](
-        cfg.baseUrl + s"/posts/ids/reactions${
+        cfg.baseUrl + s"/users${
           params(
-            "page" -> page.toString,
-            "in_team" -> options.inTeam.toString,
-            "not_in_team" -> options.notInTeam.toString,
-            "in_channel" -> options.inChannel.toString,
-            "not_in_channel" -> options.notInChannel.toString,
-            "active" -> options.active.toString,
+            "page" -> page.toString.some,
+            "in_team" -> options.inTeam(_.toString),
+            "not_in_team" -> options.notInTeam(_.toString),
+            "in_channel" -> options.inChannel(_.toString),
+            "not_in_channel" -> options.notInChannel(_.toString),
+            "active" -> options.active(_.toString),
           )
         }",
         Method.Get,
@@ -592,7 +592,7 @@ class ApiClient[
 }
 
 object ApiClient {
-  private def params(params: (String, String)*): String = {
+  private def params(params: (String, Option[String])*): String = {
     params.toMap.map(p => s"${p._1}=${p._2}").mkString("?", "&", "")
   }
 }

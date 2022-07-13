@@ -17,13 +17,13 @@ import zio.interop.catz.given
 import zio.interop.catz.implicits.given
 
 
-object CirceSttpClient {
-  type Api[F[_]] = ApiClient[F, Json, Encoder, Decoder]
-
-  def apply(cfg: ClientConfig): Task[Api[Task]] =
-    for {
-      backend <- HttpClientZioBackend()
-      client <- SttpClient[Task, Task, Encoder, Decoder](backend)
-      given ZoneId <- ZIO.succeed(ZoneId.systemDefault())
-    } yield new ApiClient[Task, Json, Encoder, Decoder](client, cfg)(codec)
-}
+//object CirceSttpClient {
+//  type Api[F[_]] = ApiClient[F, Json, Encoder, Decoder]
+//
+//  def apply(cfg: ClientConfig): Task[Api[Task]] =
+//    for {
+//      backend <- HttpClientZioBackend()
+//      client <- SttpClient[Task, Task, Encoder, Decoder](backend)
+//      given ZoneId <- ZIO.succeed(ZoneId.systemDefault())
+//    } yield new ApiClient[Task, Json, Encoder, Decoder](client, cfg)(codec)
+//}

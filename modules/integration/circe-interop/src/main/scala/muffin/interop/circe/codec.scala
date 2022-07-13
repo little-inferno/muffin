@@ -348,7 +348,7 @@ object codec extends CodecSupport[Json, Encoder, Decoder] {
     (c: HCursor) =>
       for {
         channelId <- c.downField("channel_id").as[ChannelId]
-        userId <- c.downField("userId").as[UserId]
+        userId <- c.downField("user_id").as[UserId]
         roles <- c.downField("roles").as[String]
         lastViewedAt <- c
           .downField("last_viewed_at")
@@ -365,9 +365,9 @@ object codec extends CodecSupport[Json, Encoder, Decoder] {
           .flatten
           .map(Instant.ofEpochSecond)
           .map(LocalDateTime.ofInstant(_, zone))
-        teamDisplayName <- c.downField("team_display_name").as[String]
-        teamName <- c.downField("team_name").as[String]
-        teamUpdateAt <- c.downField("team_update_at").as[String]
+        teamDisplayName = c.downField("team_display_name").as[String].toOption
+        teamName = c.downField("team_name").as[String].toOption
+        teamUpdateAt = c.downField("team_update_at").as[String].toOption
       } yield ChannelMember(
         channelId,
         userId,
@@ -530,7 +530,7 @@ object codec extends CodecSupport[Json, Encoder, Decoder] {
 
   given NotifyPropsFrom: Decoder[NotifyProps] = (c: HCursor) =>
     for {
-      email <- c.downField("email").as[Boolean]
+      email <- c.downField("email").as[NotifyOption]
       push <- c.downField("push").as[NotifyOption]
       desktop <- c.downField("desktop").as[NotifyOption]
       markUnread <- c.downField("mark_unread").as[UnreadOption]

@@ -15,7 +15,7 @@ enum UnreadOption:
   case Mention
 
 case class NotifyProps(
-  email: Boolean,
+  email: NotifyOption,
   push: NotifyOption,
   desktop: NotifyOption,
   markUnread: UnreadOption
@@ -30,9 +30,9 @@ case class ChannelMember(
   mentionCount: Option[Int],
   notifyProps: NotifyProps,
   lastUpdateAt: Option[LocalDateTime],
-  teamDisplayName: String,
-  teamName: String,
-  teamUpdateAt: String
+  teamDisplayName: Option[String],
+  teamName: Option[String],
+  teamUpdateAt: Option[String]
 )
 
 case class ChannelInfo(
